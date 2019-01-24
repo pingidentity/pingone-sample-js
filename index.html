@@ -1,0 +1,152 @@
+<!--
+ * Copyright (C) 2015-2019 Ping Identity Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License (GPLv2 only)
+ * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses>.
+ *
+ -->
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src https://auth.pingone.com https://api.pingone.com https://apps.pingone.com https://cdn.polyfill.io https://cdn.shoelace.style 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://cdn.shoelace.style/1.0.0-beta24/shoelace.css;
+        script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/v2/polyfill.js https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js">
+  <title>PingOne for Customers OIDC Sample</title>
+  <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css">
+  <script type="text/javascript"
+          src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise,fetch"></script>
+  <script type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js"></script>
+  <style type="text/css">
+    .closeBtn {
+      margin-left: 15px;
+      color: white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .closeBtn:hover {
+      color: black;
+    }
+
+    .closeBtn:not( :hover ) {
+      color: white;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1>PingOne for Customers OIDC Sample</h1>
+  <br>
+  <div id="status" style="display: block">
+    <span class="closeBtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <div class="alert" id="alertMessage"></div>
+  </div>
+
+  <div id="signInView">
+    <p>You are not currently authenticated. Click Sign On to get started.</p>
+    <div class="input-group">
+      <button type="button" id="signInBtn">Sign On</button>
+    </div>
+  </div>
+
+  <div id="signOffView" style="display: none">
+    <fieldset>
+      Hello, <strong id="first_name_title"></strong> <strong id="last_name_title"> </strong>!
+
+      <p>Please check your user and token information below<br> Click Sign Off to
+        switch users.</p>
+
+      <div id="userData">
+
+        <div class="input-group">
+          <button id="signOffBtn">Sign Off</button>
+        </div>
+
+        <div class="input-field" id="userInfoView"></div>
+        <div class="input-field" id="tokenInfoView"></div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<script src="auth.js"></script>
+<script type="text/javascript">
+
+  document.getElementById("signInBtn").addEventListener("click", function () {
+    authClient.signIn({
+      scope: 'openid profile email address',
+      response_type: 'token id_token'
+    });
+  }, false);
+
+  document.getElementById("signOffBtn").addEventListener("click", function () {
+    authClient.signOff()
+    .then(displayViews)
+    .catch(error => alertHandler(
+        'Unable to log off: ' + error.message + '\n' + (error.details && error.details[0]
+        ? error.details[0].message : ''), "danger"));
+  }, false);
+
+  function displayViews() {
+    let signOffView = document.getElementById('signOffView');
+    let signInView = document.getElementById('signInView');
+
+    if (authClient.isAuthenticated()) {
+      signOffView.style.display = 'block';
+      signInView.style.display = 'none';
+    } else {
+      signOffView.style.display = 'none';
+      signInView.style.display = 'block';
+    }
+  }
+
+  function alertHandler(message, alertType) {
+    document.getElementById('status').style.display = 'block';
+    document.getElementById('alertMessage').innerHTML = message;
+    document.getElementById('alertMessage').classList.toggle('alert-' + alertType, true);
+  }
+
+  let authClient = new AuthOIDC({
+    environment_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    client_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+    redirect_uri: 'http://localhost:8080',
+  });
+
+  // Set application state in regard to user actions
+  authClient.init()
+  .then(data => {
+        document.getElementById('first_name_title').innerHTML = data['given_name'];
+        document.getElementById('last_name_title').innerHTML = data['family_name'];
+        document.getElementById('userInfoView').innerHTML = '<br><b>User Details</b><br>'
+            + authClient.formatIntoTable(data);
+        document.getElementById('tokenInfoView').innerHTML = '<br><b>Token Details</b><br>'
+            + authClient.showTokenClaimsInfo();
+        displayViews();
+      }
+  )
+  .catch(error => console.log(error));
+
+</script>
+</body>
+</html>

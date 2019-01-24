@@ -1,0 +1,25 @@
+{
+  "name": "oidc-implicit-flow",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Simple Javascript client that implements the OpenID Connect implicit flow",
+  "main": "auth.js",
+  "keywords": [
+    "openidconnect"
+  ],
+  "homepage": "https://github.com/pingidentity/pingone-customers-sample-oidc",
+  "devDependencies": {
+    "http-server": "^0.11.1",
+    "jsdoc": "^3.5.5"
+  },
+  "dependencies": {
+    "http-server": "^0.11.1"
+  },
+  "scripts": {
+    "start": "node_modules/http-server/bin/http-server"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules"
+  ]
+}

@@ -109,16 +109,16 @@ to specify another directory.
 1. Following [Content Security Policy](https://www.owasp.org/index
 .php/Content_Security_Policy_Cheat_Sheet#Refactoring_inline_code) all inline code preferable should be moved to a 
 separate JavaScript file on production.
-2. Values like `state` and `nonce` are used within [auth.js](auth.js) library to prevent CSRF and prevent token replay attacks respectively.
+2. Values like `state` and `nonce` are used within [auth.js](auth.js) library to prevent CSRF and token replay attacks respectively.
 Your application sends the `state` (randomly generated value) when starting an authentication request and validate the received value when processing the response. If you receive a response with a state that does not match the initially generated value,
  then you may be the target of an attack because this is either a response for an unsolicited request or someone trying to forge the response.
  Your application also sends the `state` parameter to maintain state between the logout request and the callback to the endpoint specified by the `post_logout_redirect_uri query` parameter.
-3. Make sure to open a browser tab that's not enforcing CORS. You can open another instance of chrome with disabled security (without closing other running chrome instances):
+3. In case you want to experience more OIDC and other [PingOne for Customers Management APIs](https://apidocs.pingidentity.com/pingone/customer/v1/api/man/) without enforcing CORS, you can open another instance of chrome with disabled security (without closing other running chrome instances):
 on Mac terminal:
 ```bash
 open -n -a "Google Chrome" --args --user-data-dir=/tmp/temp_chrome_user_data_dir http://localhost:8080/ --disable-web-security
 ```
-Otherwise you will see such error like *"No 'Access-Control-Allow-Origin' header is present on the requested resource"* on logout action.
+Otherwise you will see such error like *"No 'Access-Control-Allow-Origin' header is present on the requested resource"* on some actions.
 4. A fetch() promise will reject with a TypeError when a network error is encountered or CORS is misconfigured on the server side. Instead, it will resolve normally (with ok status set to false), and it will only reject on network failure or if anything prevented the request from completing. 
 See more about checking that the fetch was successful [here](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#Checking_that_the_fetch_was_successful)
 5. For simple styling [shoelace CSS library](https://shoelace.style/) was used, and [http-server](https://www.npmjs.com/package/http-server) - as a command-line http server.

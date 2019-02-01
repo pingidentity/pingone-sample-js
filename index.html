@@ -101,11 +101,7 @@
   }, false);
 
   document.getElementById("signOffBtn").addEventListener("click", function () {
-    authClient.signOff()
-    .then(displayViews)
-    .catch(error => alertHandler(
-        'Unable to log off: ' + error.message + '\n' + (error.details && error.details[0]
-        ? error.details[0].message : ''), "danger"));
+    authClient.signOff();
   }, false);
 
   function displayViews() {
@@ -131,6 +127,7 @@
     environment_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
     client_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
     redirect_uri: 'http://localhost:8080',
+    post_logout_redirect_uri: 'http://localhost:8080'
   });
 
   // Set application state in regard to user actions

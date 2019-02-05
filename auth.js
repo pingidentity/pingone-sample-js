@@ -511,9 +511,9 @@ var AuthOIDC = function (config) {
           + activeParameters['post_logout_redirect_uri'] + '&state='
           + sessionStorage.getItem('state');
     }
-    window.location.href = logOffURL;
     clearSessionData();
     storeInfo(null, null);
+    window.location.href = logOffURL;
   }
 
   /**

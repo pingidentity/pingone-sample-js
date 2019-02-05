@@ -494,7 +494,8 @@ var AuthOIDC = function (config) {
   };
 
   /**
-   * Call the end session endpoint to initiate the logout flow
+   * Call the end session endpoint to initiate the logout flow notifying the identity provider that the End-User has logged out of the site and might want to log out of the identity provider as well.
+   * In this case, after having logged the End-User out of the application, it (application) redirects the End-User's User Agent to the identity provider's logout endpoint URL
    * @function signOff
    * @memberof AuthOIDC
    */
@@ -510,16 +511,9 @@ var AuthOIDC = function (config) {
           + activeParameters['post_logout_redirect_uri'] + '&state='
           + sessionStorage.getItem('state');
     }
-    return fetch(logOffURL, {
-      credentials: 'include'
-    })
-    .then(handleResponse)
-    .finally(() => {
-      clearSessionData();
-      storeInfo(null, null);
-      window.location.replace('/');
-    });
-
+    clearSessionData();
+    storeInfo(null, null);
+    window.location.href = logOffURL;
   }
 
   /**

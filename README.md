@@ -1,6 +1,6 @@
-# OIDC Authentication Vanilla JS Sample Guide
+# OIDC Authentication JavaScript Sample Guide
 The PingOne for Customers Authentication Sample is built on top of [OpenID Connect/OAuth 2 API endpoints](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/) to give 
-you a basic overview how invoke P14C’s OIDC protocol to authenticate an existing user. This example shows you how to 
+you a basic overview how invoke PingOne for Customers’ OIDC protocol to authenticate an existing user. This example shows you how to 
 use the [PingOne for Customers auth.js library](auth.js) to login a user to your JavaScript application through the [implicit flow](https://openid.net/specs/openid-connect-implicit-1_0.html), 
 where the user is redirected to the PingOne for Customers hosted login page.  
 After the user authenticates it is redirected back to the application with an ID and access token.
@@ -11,7 +11,7 @@ You will need the following things:
  
 - PingOne for Customers Account  - If you don’t have an existing one, please register it.
 - An OpenID Connect Application, configured for Single-Page App (SPA) mode. Instructions for 
-creating one can be found [here](TODO). Also make sure that it is enabled plus redirect URL's and 
+creating one can be found [here](https://developer.pingidentity.com/content/p14c/en/signup.html). Also make sure that it is enabled plus redirect URL's and 
 access grants by scopes are properly set.
 - At least one user in the same environment as the application (not assigned)
 
@@ -21,7 +21,6 @@ If you haven't already done so, sign up for your PingOne for Customers account a
 ### Building the Source
 ```bash
 git clone git@github.com:pingidentity/pingone-customers-sample-oidc.git .
-cd vanilla-js
 npm install
 ```
 

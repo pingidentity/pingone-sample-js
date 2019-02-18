@@ -14,6 +14,7 @@ You will need the following things:
 creating one can be found [here](https://developer.pingidentity.com/content/p14c/en/signup.html). Also make sure that it is enabled plus redirect URL's and 
 access grants by scopes are properly set.
 - At least one user in the same environment as the application (not assigned)
+- Installed [Node.js](https://nodejs.org/en/download/)
 
 ## Getting Started
 If you haven't already done so, sign up for your PingOne for Customers account and create a new Single Page application in "Connections" tab of admin console. 
@@ -32,7 +33,8 @@ npm install
 authClient = new AuthOIDC({
   environment_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   client_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-  redirect_uri: 'http://localhost:8080'
+  redirect_uri: 'http://localhost:8080',
+  post_logout_redirect_uri: 'http://localhost:8080'
 });
 ```
 or
@@ -40,7 +42,8 @@ or
 let clientInfo = {
   environment_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   client_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-  redirect_uri: 'http://localhost:8080'
+  redirect_uri: 'http://localhost:8080',
+  post_logout_redirect_uri: 'http://localhost:8080'
 }
 authClient.setConfig(clientInfo);
 ```
@@ -53,7 +56,7 @@ authClient.setConfig(clientInfo);
 Application name.
 - `redirect_uri`: *Required*. The URL to which the PingOne will redirect the user's browser after authorization has been granted by 
 the user. *REDIRECT URLS* values corresponds to this data. The Access and ID Token will be available in the hash fragment of this URL.
-- `post_logout_redirect_uri`: *Optional*. The URL to which the browser is redirected after a logout has been performed. *LOGOUT URLS* values corresponds to this data. 
+- `post_logout_redirect_uri`: *Optional*. The URL to which the browser is redirected after a logout has been performed. *SIGNOFF URLS* values corresponds to this data. 
 
 3. Initiate the OIDC client work in regard to user actions by calling `init` function. It returns a promise either with user data, retrieved from [UserInfo Endpoint](https://openid.net/specs/openid-connect-implicit-1_0.html#UserInfo),
  so you can display it right after, or rejected promise - if user is not logged in yet. :
@@ -77,7 +80,7 @@ Other functions you need to include are:
 
 ```js
 authClient.signIn({
-    scope: 'openid profile email address p1:read:self:user p1:update:self:user',
+    scope: 'openid profile email address p1:read:user p1:update:user',
     response_type: 'token id_token'
   });
 ```

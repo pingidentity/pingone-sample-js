@@ -14,7 +14,7 @@ You will need the following things:
 creating one can be found [here](https://developer.pingidentity.com/content/p14c/en/signup.html). Also make sure that it is enabled plus redirect URL's and 
 access grants by scopes are properly set.
 - At least one user in the same environment as the application (not assigned)
-- Installed [Node.js](https://nodejs.org/en/download/)
+- To have installed [Node.js](https://nodejs.org/en/download/)
 
 ## Getting Started
 If you haven't already done so, sign up for your PingOne for Customers account and create a new Single Page application in "Connections" tab of admin console. 

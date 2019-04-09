@@ -6,6 +6,10 @@ where the user is redirected to the PingOne for Customers hosted login page.
 After the user authenticates it is redirected back to the application with an ID and access token.
 For more information check this [OpenID Connect 1.0 Specifications](https://openid.net/developers/specs/)
 
+## Tutorial Video
+
+A tutorial video detailing the implementation of this sample application is available on YouTube: [https://youtu.be/TBA5VTfnsSE](https://youtu.be/TBA5VTfnsSE)
+
 ## Prerequisites
 You will need the following things:
  

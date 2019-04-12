@@ -89,7 +89,7 @@ class Home extends React.Component {
     let nonce = api.generateRandomValue();
     sessionStorage.setItem("state", state);
 
-    api.signIn(authDetails.environmentId,
+    api.authorize(authDetails.environmentId,
         authDetails.responseType, authDetails.clientId,
         authDetails.redirectUri, authDetails.scope,
         state, nonce,
@@ -166,15 +166,41 @@ class Home extends React.Component {
         <div className="alert alert-danger">{errorMessage}</div>
     );
 
-    // Redirect user to login page in case of access,id tokens or code absence
-    if (!(sessionStorage.getItem("access_token") && sessionStorage.getItem(
+    const isNotAuthenticated = !(sessionStorage.getItem("access_token") && sessionStorage.getItem(
         "id_token")) && !/access_token|id_token/.test(window.location.hash)
         && !sessionStorage.getItem("code") && !/code/.test(
-            window.location.href)) {
-      return (
-          <div className="container">
-            <h1>PingOne for Customers OIDC Sample</h1>
-            {alert}
+            window.location.href);
+
+    const userData = userInfo ? (
+            <div className="input-field">
+              <table className="table">
+                <thead>
+                <tr>
+                  <th>Claim</th>
+                  <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                {Object.keys(userInfo).map(key => (
+                    <tr key={key}>
+                      <td>{key}</td>
+                      <td>{userInfo[key]}</td>
+                    </tr>
+                ))}
+                </tbody>
+              </table>
+            </div>
+        ) :
+        (
+            <div className="input-field" id="user-info">
+              <a href="#" onClick={this.handleUserInfo} id="show-user-info">
+                Show user information
+              </a>
+            </div>
+        );
+
+    const content = isNotAuthenticated ?
+        (
             <div id="signInView">
               <p>You are not currently authenticated. Click Sign On to get
                 started.</p>
@@ -184,58 +210,27 @@ class Home extends React.Component {
                 </button>
               </div>
             </div>
-          </div>
-      );
-    } else {
-      const userData = userInfo && (
-          <div className="input-field">
-            <table className="table">
-              <thead>
-              <tr>
-                <th>Claim</th>
-                <th>Value</th>
-              </tr>
-              </thead>
-              <tbody>
-              {Object.keys(userInfo).map(key => (
-                  <tr key={key}>
-                    <td>{key}</td>
-                    <td>{userInfo[key]}</td>
-                  </tr>
-              ))}
-              </tbody>
-            </table>
-          </div>
-      );
-      return (
-          <div className="container">
-            {alert}
+        ) : (
             <div className="home-app">
               <em>
                 Congratulations! This is a secure resource.
               </em>
               <p/>
               <div className="input-group">
-                <button
-                    className="btn"
-                    type="button"
-                    onClick={this.handleSignOff}>
-                  Sign Off
+                <button type="button" onClick={this.handleSignOff}> Sign Off
                 </button>
-              </div>
-
-              <div className="input-field" id="user-info">
-                <a href="#"
-                   onClick={this.handleUserInfo}
-                   id="show-user-info">
-                  Show user information
-                </a>
               </div>
               {userData}
             </div>
-          </div>
-      )
-    }
+        ) ;
+
+    return (
+        <div className="container">
+          <h1>PingOne for Customers OIDC Sample</h1>
+          {alert}
+          {content}
+        </div>
+    )
   }
 }
 

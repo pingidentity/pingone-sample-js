@@ -3,6 +3,13 @@
 This React sample demonstrates how to perform login actions that will initiate flow endpoint operations are used only to implement custom authentication UIs. 
 OIDC/OAuth 2 requests initiate the flow and redirect the browser to the custom authentication UI (which is configured in the application through the application’s `loginPageUrl` property.)
 
+This example contains code for SPA that( by default ) calls OAuth 2.0 implicit flow, where the access token is returned immediately without an extra authorization code exchange step.
+If succeeded, the  OAuth 2.0 protected resource ( [UserInfo Endpoint](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/#UserInfo-endpoint) ) that returns claims about the authenticated end user can be tested by clicking __"Show user information"__ link.
+
+You can also try other authorization grants like `authorization_code` or `client_credentials`, where your application will call the `/{environmentId}/as/token` endpoint to acquire the access token.
+For this grant types the `grantType` and `clientSecret` in [config.js](src/config.js) are necessary.
+
+# Content
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Developer Notes](#developer-notes)
@@ -26,7 +33,7 @@ You will need the following things:
     *AUTHORIZATION URL* ). Or from the *Settings* main menu (*ENVIRONMENT ID* variable)
     - `client_id`: *Required*. Your application's client UUID. You can also find this value at Application's Settings right under the 
     Application name.
-    - `clientSecret`: A string that specifies the the application’s client secret. This property is required only if the application’s `tokenEndpointAuthMethod` property is set to `CLIENT_SECRET_POST`.
+    - `clientSecret`: A string that specifies the the application’s client secret. This property is required if your application **is not a public client**. Plus make sure to set it if the following  the application’s `tokenEndpointAuthMethod` property is set to `CLIENT_SECRET_POST`.
     - `responseType`: A string that specifies the code or token type returned by an authorization request. Options are `token`, `id_token`, and `code`. The value **MUST** be the `code` for requesting an authorization code flow, `id_token token` for the implicit flow, or `code id_token` for hybrid flow(a scenario when you can have a long lived session in your application and get tokens back immediately from the authorization endpoint).
     For more variants please check [Definitions of Multiple-Valued Response Type Combinations](https://openid.net/specs/oauth-v2-multiple-response-types-1_0.html#Combinations) topic.
     - `grantType`: A string that specifies the grant type of the token request. Options are `authorization_code`, `implicit`(is set by default), and `client_credentials`. So, if you have `responseType=code`, then define `redirectUri=authorization_code`.
@@ -76,6 +83,7 @@ Otherwise you will see such error like *"No 'Access-Control-Allow-Origin' header
 3. Sample doesn't use a sophisticated persistent layer for OAuth2 tokens, thereby a browser `session storage` was used as a cache (so you don't loose them once the browser tab is closed or refreshed).  [sessionStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) is similar to [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage); the only difference is while data stored in `localStorage` has no expiration time, data stored in `sessionStorage` gets cleared when the page session ends. A page session lasts for as long as the browser is open and survives over page reloads and restores.
 If you are looking for more advanced local storage solutions, you can checkout [store.js](https://github.com/marcuswestin/store.js/), [cross-storage](https://github.com/zendesk/cross-storage) or similar solutions. 
 4. For the development server port 8080 is used, that is specified in [package.json](package.json) `“start”` script as follows: ` "start": “PORT=8080 react-scripts start",`
+5. If you are using Redux and want to keep tokens after browser tab refresh, than you can [persist redux state to the local storage](https://egghead.io/lessons/javascript-redux-persisting-the-state-to-the-local-storage) by using a simple redux subscriber to store auth tokens in the browser localStorage.
 
 
 # Available Scripts

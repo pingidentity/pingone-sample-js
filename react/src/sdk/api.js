@@ -14,7 +14,7 @@ import config from "../config";
  ******************************************************************************/
 
 /**
- * Login user
+ *  Authorize the client
  *
  * @param environmentId a string that specifies the environment’s UUID.
  * @param responseType a string that specifies the code or token type returned by an authorization request. Options are token, id_token, and code. Default values is "token id_token". This is a required property.
@@ -28,7 +28,7 @@ import config from "../config";
  * @param acr_values an optional parameter that designates whether the authentication request includes steps for a single-factor or multi-factor authentication flow. This parameter maps to the name of a sign-on policy that must be assigned to the application. For more information, see Sign-on policies.
  * @returns {Promise<T | never>}
  */
-const signIn = (environmentId, responseType='token id_token', clientId, redirectUri, scope,
+const authorize = (environmentId, responseType='token id_token', clientId, redirectUri, scope,
     state, nonce, prompt = 'login', maxAge, acrValues = null) => {
   let authUrl = `${getBaseApiUrl(
       true)}/${environmentId}/as/authorize?` +
@@ -85,7 +85,7 @@ const getUserInfo = (environmentId, token) => {
  * @param code a string that specifies the authorization code returned by the authorization server. This property is required only if the grant_type is set to authorization_code
  */
 const getAccessToken = (environmentId, clientId, clientSecret = null,
-    redirectUri, grant_type = 'implicit', tokenEndpointAuthMethod = 'client_secret_post', code) => {
+    redirectUri, grant_type = 'authorization_code', tokenEndpointAuthMethod = 'client_secret_post', code) => {
   if(_.isEqual(tokenEndpointAuthMethod, 'client_secret_post')){
     return post(`${getBaseApiUrl(
         true)}/${environmentId}/as/token`,
@@ -151,7 +151,7 @@ const generateRandomValue = () => {
 
 
 export default {
-  signIn,
+  authorize,
   signOff,
   getAccessToken,
   getUserInfo,

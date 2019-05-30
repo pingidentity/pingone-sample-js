@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<br>
+{% if session['oauth_token'] %}
+<em>
+    Congratulations! This is a secure resource.
+</em>
+<br>
+<br>
+
+{% if userInfo is defined %}
+<div id="userInfo">
+    <h3>User details</h3>
+    <dl>
+        {% for key, value in userInfo.items() %}
+        <dt>{{ key|e }}</dt>
+        <dd>{{ value|e }}</dd>
+        {% endfor %}
+    </dl>
+</div>
+
+<p><a href="/user/info" class="button disabled">Show User Information</a></p>
+{% else %}
+<p><a href="/user/info" class="button">Show User Information</a></p>
+{% endif %}
+
+
+<p><a href="/password/change" class="button">Change Password</a></p>
+<p><a href="/logout" class="button">Logout</a></p>
+{% else %}
+
+<p><a href="/login" class="button">Login</a></p>
+
+{% endif %}
+
+<script src="{{url_for('static', filename='helpers.js')}}"></script>
+
+{% endblock %}

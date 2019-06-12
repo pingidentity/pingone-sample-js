@@ -183,7 +183,7 @@ var AuthOIDC = function (config) {
       // Clear URL hash
       window.location.hash = '';
     }
-    return Promise.reject('User is not logged in yet');
+    return Promise.resolve('User is not logged in yet');
   };
 
   /**

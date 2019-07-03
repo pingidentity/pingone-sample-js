@@ -32,7 +32,7 @@ var AuthOIDC = function (config) {
    * @property {string} activeParameters.auth_uri - The authorization and authentication endpoint called to request the access token required to authenticate PingOne API requests.
    *
    */
-  var activeParameters = {
+  const activeParameters = {
     api_uri: 'https://api.pingone.com/v1',
     auth_uri: 'https://auth.pingone.com'
   };
@@ -40,7 +40,7 @@ var AuthOIDC = function (config) {
   /**
    * User Attribute Claims and their descriptions
    */
-  var claimsMapping = {
+  const claimsMapping = {
     at_hash: 'Access Token hash value.',
     sub: 'Subject - Identifier for the End-User at the Issuer.',
     name: 'End-User\'s full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User\'s locale and preferences.',
@@ -57,8 +57,15 @@ var AuthOIDC = function (config) {
     aud: 'Audience(s) that this ID Token is intended for.',
     acr: 'Authentication Context Class Reference value that identifies the Authentication Context Class that the authentication performed satisfied.',
     auth_time: 'Time when the End-User authentication occurred.',
-    exp: 'Expiration time on or after which the ID Token MUST NOT be accepted for processing. T',
-    iat: 'Time at which the JWT was issued.'
+    exp: 'Expiration time on or after which the ID Token MUST NOT be accepted for processing. ',
+    iat: 'Time at which the JWT was issued.',
+    address_country: "Country name.",
+    address_postal_code: "Zip code or postal code. ",
+    address_region: "State, province, prefecture, or region. ",
+    address_locality: "City or locality. ",
+    address_formatted: "Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair (\"\\r\\n\") or as a single line feed character (\"\\n\").",
+    address_street_address: "Full street address component, which MAY include house number, street name, Post Office Box, and multi-line extended street address information. "
+        + "This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair (\"\\r\\n\") or as a single line feed character (\"\\n\")."
   };
 
   /**
@@ -75,7 +82,7 @@ var AuthOIDC = function (config) {
    * @readonly
    * @memberof AuthOIDC
    */
-  var clientOptions = [
+  const clientOptions = [
     'client_id',
     'redirect_uri',
     'environment_id',
@@ -102,7 +109,7 @@ var AuthOIDC = function (config) {
    * @readonly
    * @memberof AuthOIDC
    */
-  var providerOptions = [
+  const providerOptions = [
     "authorization_endpoint",
     "claim_types_supported",
     "claims_parameter_supported",
@@ -142,7 +149,7 @@ var AuthOIDC = function (config) {
    * @readonly
    * @memberof AuthOIDC
    */
-  var loginRequestOptions = [
+  const loginRequestOptions = [
     'scope',
     'response_type',
     'max_age',
@@ -176,7 +183,7 @@ var AuthOIDC = function (config) {
     } catch (e) {
       // Expected behaviour when there are no tokens in URL we are expecting
       // (user is not logged in yet), or other validations didn't pass
-      if (e.name != 'AuthException') {
+      if (e.name !== 'AuthException') {
         throw e;
       }
     } finally {
@@ -184,7 +191,7 @@ var AuthOIDC = function (config) {
       window.location.hash = '';
     }
     return Promise.resolve('User is not logged in yet');
-  };
+  }
 
   /**
    * Initialize PingIdentity OpenID Connect client
@@ -214,15 +221,12 @@ var AuthOIDC = function (config) {
         }
       }
       return true;
-    }
-    catch (e) {
+    } catch (e) {
       throw new AuthException(
           "Unable to set the Identity Provider's configuration parameters: "
           + e.toString());
-      return false;
     }
-  };
-
+  }
   /**
    * Sets the Client's configuration parameters
    * @function setClientInfo
@@ -238,14 +242,12 @@ var AuthOIDC = function (config) {
           activeParameters[params[i]] = clientParams[params[i]];
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       throw new AuthException(
           "Unable to set the Client's configuration parameters: "
           + e.toString());
     }
-  };
-
+  }
   /**
    * Set configuration options in the browser session storage
    *
@@ -313,14 +315,12 @@ var AuthOIDC = function (config) {
           sessionStorage.removeItem('clientInfo');
         }
       }
-    }
-    catch (e) {
+    } catch (e) {
       throw new AuthException(
           'Unable to store the Identity Provider and Client configuration options: '
           + e.toString());
     }
-  };
-
+  }
   /**
    * Load and restore the Identity Provider and Client configuration options from the browser session storage
    * @function restoreInfo
@@ -336,14 +336,12 @@ var AuthOIDC = function (config) {
       if (clientInfo) {
         setClientInfo(JSON.parse(clientInfo));
       }
-    }
-    catch (e) {
+    } catch (e) {
       throw new AuthException(
           'Unable to restore the Identity Provider and Client configuration options: '
           + e.toString());
     }
-  };
-
+  }
   /**
    * Check whether the required configuration parameters are set
    * @function checkRequiredInfo
@@ -363,16 +361,13 @@ var AuthOIDC = function (config) {
         }
       }
       return true;
-    }
-    catch (e) {
+    } catch (e) {
       throw new AuthException(
           'Unable to check whether the required configuration parameters are set: '
           + e.toString());
-      return false;
     }
 
-  };
-
+  }
   /**
    * Redirect to the Identity Provider for authentication (default values are: scope=openid, response_type=id_token)
    * @param {object} reqOptions    - Optional authentication request options. See {@link loginRequestOptions}
@@ -391,7 +386,7 @@ var AuthOIDC = function (config) {
       let nonce = null;
 
       if (reqOptionsExist && (reqOptions['nonce'] && reqOptions['state'])) {
-        state = reqOptions['state']
+        state = reqOptions['state'];
         nonce = reqOptions['nonce']
       }
 
@@ -413,13 +408,11 @@ var AuthOIDC = function (config) {
           return value;
         };
 
-        rng_seed_time();
         let sRandom = new SecureRandom();
         let randState = new Array(4);
         sRandom.nextBytes(randState);
         state = byteArrayToLong(randState).toString(36);
 
-        rng_seed_time();
         let randNonce = new Array(4);
         sRandom.nextBytes(randNonce);
         nonce = byteArrayToLong(randNonce).toString(36);
@@ -440,8 +433,8 @@ var AuthOIDC = function (config) {
           let temp = [];
           if (parts) {
             for (let i = 0; i < parts.length; i++) {
-              if (parts[i] == 'code' || parts[i] == 'token' || parts[i]
-                  == 'id_token') {
+              if (parts[i] === 'code' || parts[i] === 'token' || parts[i]
+                  === 'id_token') {
                 temp.push(parts[i]);
               }
             }
@@ -491,8 +484,7 @@ var AuthOIDC = function (config) {
           'Unable to redirect to the Identity Provider for authenticaton: '
           + e.toString());
     }
-  };
-
+  }
   /**
    * Call the end session endpoint to initiate the logout flow notifying the identity provider that the End-User has logged out of the site and might want to log out of the identity provider as well.
    * In this case, after having logged the End-User out of the application, it (application) redirects the End-User's User Agent to the identity provider's logout endpoint URL
@@ -586,18 +578,16 @@ var AuthOIDC = function (config) {
         throw new AuthException('jwks_uri parameter was not set');
       } else if (id_token) {
         let idtParts = getIdTokenParts(id_token);
-        let header = getJsonObject(idtParts[0])
+        let header = getJsonObject(idtParts[0]);
         let jwks = fetchJson(activeParameters['jwks_uri']);
         if (!jwks) {
           throw new AuthException('No JWK keyset');
-        }
-        else {
-          if (header['alg'] && header['alg'].substr(0, 2) == 'RS') {
+        } else {
+          if (header['alg'] && header['alg'].substr(0, 2) === 'RS') {
             let jwk = jwkGetKey(jwks, 'RSA', 'sig', header['kid']);
             if (!jwk) {
               new AuthException('No matching JWK found');
-            }
-            else {
+            } else {
               verified = rsaVerifyJWS(id_token, jwk[0]);
             }
           } else {
@@ -639,7 +629,7 @@ var AuthOIDC = function (config) {
 
       if (id_token) {
         let idtParts = getIdTokenParts(id_token);
-        let payload = getJsonObject(idtParts[1])
+        let payload = getJsonObject(idtParts[1]);
         if (payload) {
           let now = new Date() / 1000;
           if (payload['iat'] > now + (5 * 60)) {
@@ -657,14 +647,14 @@ var AuthOIDC = function (config) {
               audience = payload['aud'];
             }
           }
-          if (audience != activeParameters['client_id']) {
+          if (audience !== activeParameters['client_id']) {
             throw new AuthException('invalid audience');
           }
-          if (payload['iss'] != activeParameters['issuer']) {
+          if (payload['iss'] !== activeParameters['issuer']) {
             throw new AuthException('invalid issuer ' + payload['iss'] + ' != '
                 + activeParameters['issuer']);
           }
-          if (payload['nonce'] != sessionStorage.getItem('nonce')) {
+          if (payload['nonce'] !== sessionStorage.getItem('nonce')) {
             throw new AuthException('invalid nonce');
           }
           valid = true;
@@ -689,10 +679,10 @@ var AuthOIDC = function (config) {
   function rsaVerifyJWS(jws, jwk) {
     try {
       if (jws && typeof jwk === 'object') {
-        if (jwk['kty'] == 'RSA') {
+        if (jwk['kty'] === 'RSA') {
           let verifier = KJUR.jws.JWS;
           if (jwk['n'] && jwk['e']) {
-            let pubkey = KEYUTIL.getKey({kty: 'RSA', n: jwk['n'], e: jwk['e']})
+            let pubkey = KEYUTIL.getKey({kty: 'RSA', n: jwk['n'], e: jwk['e']});
             return verifier.verify(jws, pubkey, ['RS256']);
           } else if (jwk['x5c']) {
             return verifier.verifyJWSByPemX509Cert(jws,
@@ -706,10 +696,8 @@ var AuthOIDC = function (config) {
     } catch (e) {
       throw new AuthException(
           'Unable to verify the JWS string: ' + e.toString());
-      return false;
     }
-  };
-
+  }
   /**
    * Get the ID Token from the current page URL whose signature is verified and contents validated
    * against the configuration data set via {@link setProviderInfo} and {@link setClientInfo}
@@ -757,8 +745,7 @@ var AuthOIDC = function (config) {
           'Unable to get the ID Token from the current page URL: '
           + e.toString());
     }
-  };
-
+  }
   /**
    * Get State from the current page URL
    * @returns {string|null} State
@@ -774,8 +761,7 @@ var AuthOIDC = function (config) {
       throw new AuthException(
           'Unable to get the State from the current page URL: ' + e.toString());
     }
-  };
-
+  }
   /**
    * Get Access Token from the current page URL
    * @returns {string|null}  Access Token
@@ -792,8 +778,7 @@ var AuthOIDC = function (config) {
           'Unable to get the Access Token from the current page URL: '
           + e.toString());
     }
-  };
-
+  }
   /**
    * Get Authorization Code from the current page URL
    * @returns {string|null}  Authorization Code
@@ -810,11 +795,10 @@ var AuthOIDC = function (config) {
           'Unable to get the Authorization Code from the current page URL: '
           + e.toString());
     }
-  };
-
+  }
   /**
    * Get Authorization Code from the current page URL
-   * @returns {string|null}  Authorization Code
+   * @returns {number}  Authorization Code
    */
   function getExpiresInFromUrl() {
     try {
@@ -841,14 +825,13 @@ var AuthOIDC = function (config) {
     try {
       let jws = new KJUR.jws.JWS();
       jws.parseJWS(id_token);
-      return new Array(jws.parsedJWS.headS, jws.parsedJWS.payloadS,
-          jws.parsedJWS.si);
+      return [jws.parsedJWS.headS, jws.parsedJWS.payloadS,
+          jws.parsedJWS.si];
     } catch (e) {
       throw new AuthException(
           'Unable to split the ID Token string: ' + e.toString());
     }
-  };
-
+  }
   /**
    * Get the contents of the ID Token payload as an JSON object
    * @param {string} id_token     - ID Token
@@ -882,8 +865,7 @@ var AuthOIDC = function (config) {
       throw new AuthException(
           'Unable to get the JSON object from JSON string: ' + e.toString());
     }
-  };
-
+  }
   /**
    * Retrieves the JSON file at the specified URL. The URL must have CORS enabled for this function to work.
    * @param {string} url      - URL to fetch the JSON file
@@ -902,14 +884,11 @@ var AuthOIDC = function (config) {
         throw new AuthException(
             "fetchJson - " + request.status + ' ' + request.statusText);
       }
-    }
-    catch (e) {
+    } catch (e) {
       throw new AuthException(
           'Unable to retrieve JSON file at ' + url + ' : ' + e.toString());
     }
-    return null;
-  };
-
+  }
   /**
    * Retrieve the JWK key that matches the input criteria
    * @param {string|object} jwkIn     - JWK Keyset string or object
@@ -932,45 +911,45 @@ var AuthOIDC = function (config) {
 
         if (jwk != null) {
           if (typeof jwk['keys'] === 'object') {
-            if (jwk.keys.length == 0) {
+            if (jwk.keys.length === 0) {
               return null;
             }
 
             for (let i = 0; i < jwk.keys.length; i++) {
-              if (jwk['keys'][i]['kty'] == kty) {
+              if (jwk['keys'][i]['kty'] === kty) {
                 foundKeys.push(jwk.keys[i]);
               }
             }
 
-            if (foundKeys.length == 0) {
+            if (foundKeys.length === 0) {
               return null;
             }
 
             if (use) {
-              var temp = [];
+              let temp = [];
               for (let j = 0; j < foundKeys.length; j++) {
                 if (!foundKeys[j]['use']) {
                   temp.push(foundKeys[j]);
-                } else if (foundKeys[j]['use'] == use) {
+                } else if (foundKeys[j]['use'] === use) {
                   temp.push(foundKeys[j]);
                 }
               }
               foundKeys = temp;
             }
-            if (foundKeys.length == 0) {
+            if (foundKeys.length === 0) {
               return null;
             }
 
             if (kid) {
               temp = [];
               for (let k = 0; k < foundKeys.length; k++) {
-                if (foundKeys[k]['kid'] == kid) {
+                if (foundKeys[k]['kid'] === kid) {
                   temp.push(foundKeys[k]);
                 }
               }
               foundKeys = temp;
             }
-            if (foundKeys.length == 0) {
+            if (foundKeys.length === 0) {
               return null;
             } else {
               return foundKeys;
@@ -982,8 +961,7 @@ var AuthOIDC = function (config) {
       throw new AuthException(
           'Unable to retrieve the JWK key: ' + e.toString());
     }
-  };
-
+  }
   /**
    * Performs Identity Provider discovery
    * @function discover
@@ -1004,8 +982,7 @@ var AuthOIDC = function (config) {
       throw new AuthException(
           'Unable to perform Identity Provider discovery: ' + e.toString());
     }
-  };
-
+  }
   function getTokenJson() {
     let id_token = sessionStorage.getItem('id_token');
     return JSON.parse(getIdTokenParts(id_token)[1]);
@@ -1027,19 +1004,40 @@ var AuthOIDC = function (config) {
    */
   function jsonIntoHtmlTable(json) {
     try {
-      let htmlString = '\n<table class="table"><tr>'
-          + '<th>Claim</th><th>Description</th><th>Value</th></tr>';
-      for (let claim in json) {
-        htmlString = htmlString + '\n<tr><td>' + claim + '</td><td>'
-            + (claimsMapping[claim]
-                ? claimsMapping[claim] : '') + '</td><td>' + json[claim]
-            + '</td></tr>';
-      }
-      return htmlString + '\n</table>';
+      return '\n<table class="table"><tr>'
+          + '<th>Claim</th><th>Description</th><th>Value</th></tr>'
+          + addTableBody(json) + '\n</table>';
     } catch (e) {
       throw new AuthException(
           'Unable to format json into HTML table:' + e.toString());
     }
+  }
+
+  /**
+   * Create table body from json object
+   * @param jsonObject json object to create a table from
+   * @returns {string|string}
+   */
+  function addTableBody(jsonObject) {
+    let htmlTableBody = '';
+    for (let claim in jsonObject) {
+      // It that is a nested element
+      if (isObject(jsonObject[claim])) {
+        let renamedKeys = Object
+        .keys(jsonObject[claim])
+        .reduce((acc, key) => ({
+          ...acc,
+          ...{[claim + '_' + key]: jsonObject[claim][key]}
+        }), {});
+        htmlTableBody = htmlTableBody + addTableBody(renamedKeys)
+      } else {
+        htmlTableBody = htmlTableBody + '\n<tr><td>' + claim + '</td><td>'
+            + (claimsMapping[claim]
+                ? claimsMapping[claim] : '') + '</td><td>' + jsonObject[claim]
+            + '</td></tr>';
+      }
+    }
+    return htmlTableBody;
   }
 
   /**
@@ -1061,6 +1059,10 @@ var AuthOIDC = function (config) {
     }
   }
 
+  function isObject(value) {
+    return value && typeof value === 'object' && value.constructor === Object;
+  }
+
   /**
    * Handle all fetch response's
    *
@@ -1068,7 +1070,7 @@ var AuthOIDC = function (config) {
    * @returns {Promise<T | never>}
    */
   function handleResponse(response) {
-    let contentType = response.headers.get('content-type')
+    let contentType = response.headers.get('content-type');
     if (contentType.includes('application/json')) {
       return handleJSONResponse(response)
     } else if (contentType.includes('text/html')) {
@@ -1117,7 +1119,6 @@ var AuthOIDC = function (config) {
       }
     })
   }
-
 
   if (config) {
     setConfig(config)

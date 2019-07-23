@@ -3,4 +3,4 @@ oauthlib==3.0.1
 requests_oauthlib==1.2.0
 flask==1.0.2
 Flask-WTF==0.14.2
-PyJWT==1.7.1
+PyJWT[crypto]==1.7.1

@@ -65,7 +65,8 @@ var AuthOIDC = function (config) {
     address_locality: "City or locality. ",
     address_formatted: "Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair (\"\\r\\n\") or as a single line feed character (\"\\n\").",
     address_street_address: "Full street address component, which MAY include house number, street name, Post Office Box, and multi-line extended street address information. "
-        + "This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair (\"\\r\\n\") or as a single line feed character (\"\\n\")."
+        + "This field MAY contain multiple lines, separated by newlines. Newlines can be represented either as a carriage return/line feed pair (\"\\r\\n\") or as a single line feed character (\"\\n\").",
+    amr_0: 'Authentication methods. '
   };
 
   /**
@@ -227,6 +228,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Sets the Client's configuration parameters
    * @function setClientInfo
@@ -248,6 +250,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Set configuration options in the browser session storage
    *
@@ -321,6 +324,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Load and restore the Identity Provider and Client configuration options from the browser session storage
    * @function restoreInfo
@@ -342,6 +346,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Check whether the required configuration parameters are set
    * @function checkRequiredInfo
@@ -368,6 +373,7 @@ var AuthOIDC = function (config) {
     }
 
   }
+
   /**
    * Redirect to the Identity Provider for authentication (default values are: scope=openid, response_type=id_token)
    * @param {object} reqOptions    - Optional authentication request options. See {@link loginRequestOptions}
@@ -485,6 +491,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Call the end session endpoint to initiate the logout flow notifying the identity provider that the End-User has logged out of the site and might want to log out of the identity provider as well.
    * In this case, after having logged the End-User out of the application, it (application) redirects the End-User's User Agent to the identity provider's logout endpoint URL
@@ -698,6 +705,7 @@ var AuthOIDC = function (config) {
           'Unable to verify the JWS string: ' + e.toString());
     }
   }
+
   /**
    * Get the ID Token from the current page URL whose signature is verified and contents validated
    * against the configuration data set via {@link setProviderInfo} and {@link setClientInfo}
@@ -746,6 +754,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Get State from the current page URL
    * @returns {string|null} State
@@ -762,6 +771,7 @@ var AuthOIDC = function (config) {
           'Unable to get the State from the current page URL: ' + e.toString());
     }
   }
+
   /**
    * Get Access Token from the current page URL
    * @returns {string|null}  Access Token
@@ -779,6 +789,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Get Authorization Code from the current page URL
    * @returns {string|null}  Authorization Code
@@ -796,6 +807,7 @@ var AuthOIDC = function (config) {
           + e.toString());
     }
   }
+
   /**
    * Get Authorization Code from the current page URL
    * @returns {number}  Authorization Code
@@ -826,12 +838,13 @@ var AuthOIDC = function (config) {
       let jws = new KJUR.jws.JWS();
       jws.parseJWS(id_token);
       return [jws.parsedJWS.headS, jws.parsedJWS.payloadS,
-          jws.parsedJWS.si];
+        jws.parsedJWS.si];
     } catch (e) {
       throw new AuthException(
           'Unable to split the ID Token string: ' + e.toString());
     }
   }
+
   /**
    * Get the contents of the ID Token payload as an JSON object
    * @param {string} id_token     - ID Token
@@ -866,6 +879,7 @@ var AuthOIDC = function (config) {
           'Unable to get the JSON object from JSON string: ' + e.toString());
     }
   }
+
   /**
    * Retrieves the JSON file at the specified URL. The URL must have CORS enabled for this function to work.
    * @param {string} url      - URL to fetch the JSON file
@@ -889,6 +903,7 @@ var AuthOIDC = function (config) {
           'Unable to retrieve JSON file at ' + url + ' : ' + e.toString());
     }
   }
+
   /**
    * Retrieve the JWK key that matches the input criteria
    * @param {string|object} jwkIn     - JWK Keyset string or object
@@ -962,6 +977,7 @@ var AuthOIDC = function (config) {
           'Unable to retrieve the JWK key: ' + e.toString());
     }
   }
+
   /**
    * Performs Identity Provider discovery
    * @function discover
@@ -983,6 +999,7 @@ var AuthOIDC = function (config) {
           'Unable to perform Identity Provider discovery: ' + e.toString());
     }
   }
+
   function getTokenJson() {
     let id_token = sessionStorage.getItem('id_token');
     return JSON.parse(getIdTokenParts(id_token)[1]);
@@ -1021,11 +1038,10 @@ var AuthOIDC = function (config) {
   function addTableBody(jsonObject) {
     let htmlTableBody = '';
     for (let claim in jsonObject) {
-      // It that is a nested element
+      // In case that is a nested element like address modify its keys by adding '_' between parent and child keys(i.s parentKey_childKey)
+      // for getting a proper claim description from the map
       if (isObject(jsonObject[claim])) {
-        let renamedKeys = Object
-        .keys(jsonObject[claim])
-        .reduce((acc, key) => ({
+        let renamedKeys = Object.keys(jsonObject[claim]).reduce((acc, key) => ({
           ...acc,
           ...{[claim + '_' + key]: jsonObject[claim][key]}
         }), {});

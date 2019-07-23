@@ -51,7 +51,7 @@ Otherwise, you can skip this step.
 ## Libraries Used
 - [Flask Message Flashing](http://flask.pocoo.org/docs/1.0/patterns/flashing/)
 - [Requests-OAuthlib](https://requests-oauthlib.readthedocs.io/en/latest/index.html)
-- [PyJWT](https://pyjwt.readthedocs.io/en/latest/usage.html)
+- [PyJWT](https://pyjwt.readthedocs.io/en/latest/usage.html) with  [cryptography](https://cryptography.io/en/latest/) for tokens decoding
 
 ## Developer Notes
 ###  SSL Layer

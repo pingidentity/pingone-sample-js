@@ -21,6 +21,7 @@ app.config.update({'SECRET_KEY': os.urandom(24)})
 csrf = CSRFProtect(app)
 auth = AuthClient(app)
 
+
 @app.before_request
 def make_session_permanent():
     session.permanent = True
@@ -55,7 +56,7 @@ def callback():
     return redirect(url_for('index'))
 
 
-@app.route('/callback', methods=['GET'], endpoint='callback')
+@app.route('/callback1', methods=['GET'], endpoint='callback')
 @auth.callback
 @csrf.exempt
 def callback():

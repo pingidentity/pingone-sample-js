@@ -139,7 +139,7 @@ class AuthClient(Configuration):
             logout_url = '{}?id_token_hint={}'.format(self.signOff_url, session.get(
                 AUTH_TOKEN_KEY).get(ID_TOKEN))
             if self.logout_uri:
-                logout_url = logout_url.join('&post_logout_redirect_uri={}'.format(self.logout_uri))
+                logout_url = logout_url + '&post_logout_redirect_uri={}'.format(self.logout_uri)
             return logout_url
         return None
 

@@ -956,7 +956,7 @@ var AuthOIDC = function (config) {
             }
 
             if (kid) {
-              temp = [];
+              let temp = [];
               for (let k = 0; k < foundKeys.length; k++) {
                 if (foundKeys[k]['kid'] === kid) {
                   temp.push(foundKeys[k]);

@@ -33,8 +33,7 @@ Also make sure that it is enabled and access grants(`phone profile address email
 
 
 # Setup & Running
-1. Copy this source code: `git clone https://github.com/pingidentity/pingone-customers-sample-oidc.git
- cd python`
+1. Copy this source code: `git clone https://github.com/pingidentity/pingone-customers-sample-oidc.git`, then enter the python directory with `cd python`
 
 2. If you have already different python projects, try to keep their dependencies separate by creating isolated python virtual environments for them.
 Otherwise, you can skip this step.

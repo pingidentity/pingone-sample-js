@@ -1,5 +1,5 @@
 <!--
- * Copyright (C) 2015-2019 Ping Identity Corporation
+ * Copyright (C) 2015-2020 Ping Identity Corporation
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License (GPLv2 only)
@@ -23,7 +23,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta http-equiv="Content-Security-Policy"
-        content="default-src https://auth.pingone.com https://api.pingone.com https://apps.pingone.com https://cdn.polyfill.io https://cdn.shoelace.style 'unsafe-inline';
+        content="default-src https://auth.pingone.com https://auth-staging.pingone.com https://api.pingone.com https://api-staging.pingone.com https://apps.pingone.com https://apps-staging.pingone.com https://cdn.polyfill.io https://cdn.shoelace.style 'unsafe-inline';
         style-src 'self' 'unsafe-inline' https://cdn.shoelace.style/1.0.0-beta24/shoelace.css;
         script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/v2/polyfill.js https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js">
   <title>PingOne for Customers OIDC Sample</title>
@@ -90,59 +90,7 @@
     </fieldset>
   </div>
 </div>
+<script src="p14c-js-sdk-auth.js"></script>
 <script src="auth.js"></script>
-<script type="text/javascript">
-
-  document.getElementById("signInBtn").addEventListener("click", function () {
-    authClient.signIn({
-      scope: 'openid profile email address',
-      response_type: 'token id_token'
-    });
-  }, false);
-
-  document.getElementById("signOffBtn").addEventListener("click", function () {
-    authClient.signOff();
-  }, false);
-
-  function displayViews() {
-    let signOffView = document.getElementById('signOffView');
-    let signInView = document.getElementById('signInView');
-
-    if (authClient.isAuthenticated()) {
-      signOffView.style.display = 'block';
-      signInView.style.display = 'none';
-    } else {
-      signOffView.style.display = 'none';
-      signInView.style.display = 'block';
-    }
-  }
-
-  function alertHandler(message, alertType) {
-    document.getElementById('status').style.display = 'block';
-    document.getElementById('alertMessage').innerHTML = message;
-    document.getElementById('alertMessage').classList.toggle('alert-' + alertType, true);
-  }
-
-  let authClient = new AuthOIDC({
-    environment_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-    client_id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-    redirect_uri: 'http://localhost:8080'
-  });
-
-  // Set application state in regard to user actions
-  authClient.init()
-  .then(data => {
-        document.getElementById('first_name_title').innerHTML = data['given_name'];
-        document.getElementById('last_name_title').innerHTML = data['family_name'];
-        document.getElementById('userInfoView').innerHTML = '<br><b>User Details</b><br>'
-            + authClient.formatIntoTable(data);
-        document.getElementById('tokenInfoView').innerHTML = '<br><b>Token Details</b><br>'
-            + authClient.showTokenClaimsInfo();
-        displayViews();
-      }
-  )
-  .catch(error => console.log(error));
-
-</script>
 </body>
 </html>

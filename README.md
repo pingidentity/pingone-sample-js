@@ -34,8 +34,8 @@ If you haven't already done so, sign up for your PingOne for Customers account a
 
 ### Building the Sample
 ```bash
-git clone git@github.com:pingidentity/pingone-customers-sample-oidc.git .
-npm install && npm build 
+git clone git@github.com:pingidentity/pingone-sample-oidc.git .
+npm install && npm run-script build
 ```
 
 ### Running the Sample

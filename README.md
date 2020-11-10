@@ -1,9 +1,9 @@
 # OIDC Authentication JavaScript Sample Guide
-The PingOne for Customers Authentication Sample is built on top of [OpenID Connect/OAuth 2 API endpoints](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_Authorize/) to give 
-you a basic overview how invoke PingOne for Customers’ OIDC protocol to authenticate an existing user. 
+The PingOne Authentication Sample is built on top of [OpenID Connect/OAuth 2 API endpoints](https://apidocs.pingidentity.com/pingone/platform/v1/api/) to give 
+you a basic overview how invoke PingOne’s OIDC protocol to authenticate an existing user. 
 This example shows you how to 
 use [@ping-identity/p14c-js-sdk-auth](https://www.npmjs.com/package/@ping-identity/p14c-js-sdk-auth) library to login a user to your JavaScript application through the [implicit flow](https://openid.net/specs/openid-connect-implicit-1_0.html), 
-where the user is redirected to the PingOne for Customers hosted login page.  
+where the user is redirected to the PingOne hosted login page.  
 After the successful authentication it is redirected back to the application with an ID and access token.
 For more information check out [OpenID Connect 1.0 Specifications](https://openid.net/developers/specs/).
 
@@ -22,7 +22,7 @@ A tutorial video detailing the implementation of this sample application is avai
 ## Prerequisites
 You will need the following things:
  
-- PingOne for Customers Account  - If you don’t have an existing one, please register it.
+- PingOne Account  - If you don’t have an existing one, please register it.
 - An OpenID Connect Application, configured for Single-Page App (SPA) mode. Instructions for 
 creating one can be found [here](https://developer.pingidentity.com/content/p14c/en/signup.html). Also make sure that it is enabled plus redirect URL's and 
 access grants by scopes are properly set.
@@ -30,7 +30,7 @@ access grants by scopes are properly set.
 - To have installed [Node.js](https://nodejs.org/en/download/)
 
 ## Getting Started
-If you haven't already done so, sign up for your PingOne for Customers account and create a new Single Page application in "Connections" tab of admin console. 
+If you haven't already done so, sign up for your PingOne account and create a new Single Page application in "Connections" tab of admin console. You can begin a trial at [https://www.pingidentity.com/en/trials.html](https://www.pingidentity.com/en/trials.html)
 
 ### Building the Sample
 ```bash
@@ -68,7 +68,7 @@ the user. *REDIRECT URLS* values corresponds to this data. The Access and ID Tok
 - `postLogoutRedirectUri`: **Optional**.. The URL to which the browser is redirected after a logout has been performed. *SIGNOFF URLS* values corresponds to this data. 
 
 - `scopes`:  **Optional**. standard OIDC or PingOne custom scopes, separated by a space which you want to request authorization for.
- [PingOne platform scopes](https://apidocs.pingidentity.com/pingone/customer/v1/api/auth/p1-a_AccessServices/#PingOne-platform-scopes-and-endpoint-operations) 
+ [PingOne platform scopes](https://apidocs.pingidentity.com/pingone/platform/v1/api/#access-services-through-scopes-and-roles) 
  are configured under "Access" tab in PingOne Admin Console. Default value: `["openid"]`
 
 - `responseType`: The type of credentials returned in the response: `token` - to get only an Access Token, `id_token` - to get only an ID Token (if you don't plan on accessing an API).

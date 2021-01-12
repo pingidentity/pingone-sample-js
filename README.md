@@ -34,7 +34,7 @@ If you haven't already done so, sign up for your PingOne account and create a ne
 
 ### Building the Sample
 ```bash
-git clone git@github.com:pingidentity/pingone-sample-oidc.git .
+git clone git@github.com:pingidentity/pingone-sample-js.git .
 npm install && npm run-script build
 ```
 

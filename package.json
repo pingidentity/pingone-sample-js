@@ -8,8 +8,8 @@
   ],
   "homepage": "https://github.com/pingidentity/pingone-sample-js",
   "dependencies": {
-    "http-server": "^0.12.3",
-    "@ping-identity/p14c-js-sdk-auth": "1.0.0-pre.1"
+    "@ping-identity/p14c-js-sdk-auth": "1.0.0-pre.1",
+    "http-server": "^0.12.3"
   },
   "scripts": {
     "start": "http-server",

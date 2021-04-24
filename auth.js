@@ -1,4 +1,5 @@
 const authClient = new PingOneAuthClient({
+  AUTH_URI: "https://auth.pingone.com", // see Ping console - could be https://auth.pingone.eu
   environmentId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   clientId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   redirectUri: 'http://localhost:8080',

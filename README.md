@@ -115,7 +115,7 @@ These steps below describes on a high level what functionality is being shown in
 1. Added the latest version of [@ping-identity/p14c-js-sdk-auth](https://www.npmjs.com/package/@ping-identity/p14c-js-sdk-auth) npm module to your [package.json](package.json):
 ```
 "dependencies": {
-    "@ping-identity/p14c-js-sdk-auth": "1.0.0-pre.2"
+    "@ping-identity/p14c-js-sdk-auth": "^1.0.0-pre.2"
   }
 ``` 
 1. Parsed current URL and got possible (id and access) tokens after user is redirected back to this application.

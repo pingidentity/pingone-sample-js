@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "http-server",
-    "build": "cp node_modules/@ping-identity/p14c-js-sdk-auth/dist/@ping-identity/p14c-js-sdk-auth.js p14c-js-sdk-auth.js"
+    "build": "cp node_modules/@ping-identity/p14c-js-sdk-auth/dist/browser/@ping-identity/p14c-js-sdk-auth.js p14c-js-sdk-auth.js"
   },
   "ignore": [
     "**/.*",

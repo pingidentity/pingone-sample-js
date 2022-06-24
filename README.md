@@ -44,6 +44,7 @@ npm install && npm run-script build
 1. Update `PingOneAuthClient` with all previously extracted data:
 ```js
 const authClient = new PingOneAuthClient({
+  AUTH_URI: 'https://auth.pingone.com', // 'https://auth.pingone.eu', 'https://auth.pingone.ca' or 'https://auth.pingone.asia'
   environmentId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   clientId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   redirectUri: 'http://localhost:8080',
@@ -61,6 +62,8 @@ const authClient = new PingOneAuthClient({
 
 - `clientId`: **Required**. Your application's client UUID. You can also find this value at Application's Settings right under the 
 Application name.
+
+- `AUTH_URI` : **Optional**. PingOne Authentication base endpoint. Default value:`https://auth.pingone.com`.  Accepted values are `https://auth.pingone.com`, `https://auth.pingone.eu`, `https://auth.pingone.ca`, and `https://auth.pingone.asia`
 
 - `redirectUri`: **Required**. The URL to which the PingOne will redirect the user's browser after authorization has been granted by 
 the user. *REDIRECT URLS* values corresponds to this data. The Access and ID Token will be available in the hash fragment of this URL.
@@ -100,8 +103,6 @@ Window `sessionStorage` - data gets cleared when the page session ends(when the 
 - `acr_values` : **Optional**. String  that designates whether the authentication request includes specified sign-on policies. Sign-on policy names should be listed in order of preference, and they must be assigned to the application. For more information, see [Sign-on policies](https://apidocs.pingidentity.com/pingone/platform/v1/api/#sign-on-policies)
 
 - `API_URI` : **Optional**. PingOne API base endpoint. Default value: `https://api.pingone.com`
-
-- `AUTH_URI` : **Optional**. PingOne Authentication base endpoint. Default value:`https://auth.pingone.com`
 
 1. Run
 ```bash

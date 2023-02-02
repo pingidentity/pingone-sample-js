@@ -1,7 +1,8 @@
 const authClient = new PingOneAuthClient({
-  AUTH_URI: 'https://auth.pingone.com', // 'https://auth.pingone.eu', 'https://auth.pingone.ca' or 'https://auth.pingone.asia'
-  environmentId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
-  clientId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  AUTH_URI: 'https://auth.pingone.eu', // 'https://auth.pingone.eu', 'https://auth.pingone.ca' or 'https://auth.pingone.asia'
+  API_URI: 'https://api.pingone.eu', // 'https://api.pingone.eu', 'https://api.pingone.ca' or 'https://api.pingone.asia'
+  environmentId: '03af8208-058f-4b80-aa8b-058864f8627c',
+  clientId: 'e1e1fb3e-28a1-427f-966f-a3444ab23206',
   redirectUri: 'http://localhost:8080',
   scopes: ['openid','profile', 'email', 'address'],
   responseType: ['token', 'id_token'],

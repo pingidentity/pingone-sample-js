@@ -1,5 +1,6 @@
 const authClient = new PingOneAuthClient({
   AUTH_URI: 'https://auth.pingone.com', // 'https://auth.pingone.eu', 'https://auth.pingone.ca' or 'https://auth.pingone.asia'
+  API_URI: 'https://api.pingone.com', // 'https://api.pingone.eu', 'https://api.pingone.ca' or 'https://api.pingone.asia'
   environmentId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   clientId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   redirectUri: 'http://localhost:8080',

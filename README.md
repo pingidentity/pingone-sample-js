@@ -2,30 +2,27 @@
 The PingOne Authentication Sample is built on top of [OpenID Connect/OAuth 2 API endpoints](https://apidocs.pingidentity.com/pingone/platform/v1/api/) to give 
 you a basic overview how invoke PingOne’s OIDC protocol to authenticate an existing user. 
 This example shows you how to 
-use [@ping-identity/p14c-js-sdk-auth](https://www.npmjs.com/package/@ping-identity/p14c-js-sdk-auth) library to login a user to your JavaScript application through the [implicit flow](https://openid.net/specs/openid-connect-implicit-1_0.html), 
-where the user is redirected to the PingOne hosted login page.  
-After the successful authentication it is redirected back to the application with an ID and access token.
+use [@ping-identity/p14c-js-sdk-auth](https://www.npmjs.com/package/@ping-identity/p14c-js-sdk-auth) library to login a user to your JavaScript application through the [implicit flow](https://openid.net/specs/openid-connect-implicit-1_0.html), where the user is redirected to the PingOne hosted login page.  
+After the successful authentication the user is redirected back to the application with an ID and access token.
 For more information check out [OpenID Connect 1.0 Specifications](https://openid.net/developers/specs/).
 
 
 #### OAuth 2.0 vs OIDC
 **OAuth 2.0** is not an authentication protocol, but OIDC is. <br />
-**OAuth 2.0** is about giving this delegated access for use in situations where the user is not present on the connection between the client and the resource being accessed.
+* **OAuth 2.0** is about giving this delegated access for use in situations where the user is not present on the connection between the client and the resource being accessed.
 The client application then becomes a consumer of the identity API. One major benefit of building authentication on top of authorization in this way is that it allows for management of end-user consent, which is very important in cross-domain identity federation at internet scale.
-
-**OIDC** tells an application who the current user is and whether or not they're present.
-
-## Tutorial Video
-
-A tutorial video detailing the implementation of this sample application is available on YouTube: [https://youtu.be/TBA5VTfnsSE](https://youtu.be/TBA5VTfnsSE)
+* **OIDC** tells an application who the current user is and whether or not they're present.
 
 ## Prerequisites
 You will need the following things:
  
 - PingOne Account  - If you don’t have an existing one, please register it.
-- An OpenID Connect Application, configured for Single-Page App (SPA) mode. Instructions for 
-creating one can be found [here](https://developer.pingidentity.com/content/p14c/en/signup.html). Also make sure that it is enabled plus redirect URL's and 
-access grants by scopes are properly set.
+- An OpenID Connect Application, configured as a for `Single Page` app (SPA) type. Documentation for creating one can be found [here](https://docs.pingidentity.com/r/en-us/pingone/p1_add_app_worker).  Please ensure the following configuration items (which are also set in this example) are applied to the application in the admin console:
+  - **Response Type** : `Token` and `ID Token`
+  - **Grant Type** : `Implicit`
+  - **Allowed Scopes** : `openid`, `profile`, `email` and `address`
+  - **Redirect URI** : `http://localhost:8080` *(or set to your own environment)*
+  - **Signoff URL** : `http://localhost:8080` *(or set to your own environment)*
 - At least one user in the same environment as the application (not assigned)
 - To have installed [Node.js](https://nodejs.org/en/download/)
 
@@ -41,9 +38,11 @@ npm install && npm run-script build
 ### Running the Sample
 
 1. Find the following SPA application configuration information from the admin console to fulfill the next step with it: **environment id**, **client id** and **redirect uri**
-1. Update `PingOneAuthClient` with all previously extracted data:
+1. Update `PingOneAuthClient` in [auth.js](auth.js) with all previously extracted data:
 ```js
 const authClient = new PingOneAuthClient({
+  AUTH_URI: 'https://auth.pingone.com', // 'https://auth.pingone.eu', 'https://auth.pingone.ca' or 'https://auth.pingone.asia'
+  API_URI: 'https://api.pingone.com', // 'https://api.pingone.eu', 'https://api.pingone.ca' or 'https://api.pingone.asia'
   environmentId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   clientId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   redirectUri: 'http://localhost:8080',
@@ -54,6 +53,10 @@ const authClient = new PingOneAuthClient({
 });
 ```
 , where
+- `AUTH_URI` : **Optional**. PingOne Authentication base endpoint. Default value:`https://auth.pingone.com`.  Accepted values are `https://auth.pingone.com`, `https://auth.pingone.eu`, `https://auth.pingone.ca`, and `https://auth.pingone.asia`
+
+- `API_URI` : **Optional**. PingOne API base endpoint. Default value: `https://api.pingone.com`.  Accepted values are `https://api.pingone.com`, `https://api.pingone.eu`, `https://api.pingone.ca`, and `https://auth.pingone.asia`
+
 - `environmentId`: **Required**. Your application's Environment ID. You can find this value at your Application's Settings under 
 **Configuration** tab from the admin console( extract `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` string that specifies the environment 128-bit universally unique identifier ([UUID](https://tools.ietf.org/html/rfc4122)) right from `https://auth.pingone
 .com/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/as/authorize` 
@@ -68,8 +71,7 @@ the user. *REDIRECT URLS* values corresponds to this data. The Access and ID Tok
 - `postLogoutRedirectUri`: **Optional**.. The URL to which the browser is redirected after a logout has been performed. *SIGNOFF URLS* values corresponds to this data. 
 
 - `scopes`:  **Optional**. standard OIDC or PingOne custom scopes, separated by a space which you want to request authorization for.
- [PingOne platform scopes](https://apidocs.pingidentity.com/pingone/platform/v1/api/#access-services-through-scopes-and-roles) 
- are configured under "Access" tab in PingOne Admin Console. Default value: `["openid"]`
+ [PingOne platform scopes](https://apidocs.pingidentity.com/pingone/platform/v1/api/#access-services-through-scopes-and-roles) are configured under "Access" tab in PingOne Admin Console. Default value: `["openid"]`
 
 - `responseType`: The type of credentials returned in the response: `token` - to get only an Access Token, `id_token` - to get only an ID Token (if you don't plan on accessing an API).
 
@@ -98,10 +100,6 @@ Window `sessionStorage` - data gets cleared when the page session ends(when the 
 - `max_age`: : **Optional**.  Integer that specifies the maximum amount of time allowed since the user last authenticated. If the `max_age` value is exceeded, the user must re-authenticate.
 
 - `acr_values` : **Optional**. String  that designates whether the authentication request includes specified sign-on policies. Sign-on policy names should be listed in order of preference, and they must be assigned to the application. For more information, see [Sign-on policies](https://apidocs.pingidentity.com/pingone/platform/v1/api/#sign-on-policies)
-
-- `API_URI` : **Optional**. PingOne API base endpoint. Default value: `https://api.pingone.com`
-
-- `AUTH_URI` : **Optional**. PingOne Authentication base endpoint. Default value:`https://auth.pingone.com`
 
 1. Run
 ```bash

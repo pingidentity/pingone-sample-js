@@ -15,82 +15,83 @@
  * along with this program; if not, see <http://www.gnu.org/licenses>.
  *
  -->
-<!doctype html>
+ <!doctype html>
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src https://auth.pingone.com https://auth-staging.pingone.com https://api.pingone.com https://api-staging.pingone.com https://apps.pingone.com https://apps-staging.pingone.com https://cdn.polyfill.io https://cdn.shoelace.style 'unsafe-inline';
-        style-src 'self' 'unsafe-inline' https://cdn.shoelace.style/1.0.0-beta24/shoelace.css;
-        script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/v2/polyfill.js https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js">
-  <title>PingOne for Customers OIDC Sample</title>
-  <link rel="stylesheet" href="https://cdn.shoelace.style/1.0.0-beta24/shoelace.css">
-  <script type="text/javascript"
-          src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise,fetch"></script>
-  <script type="text/javascript"
-          src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js"></script>
-  <style type="text/css">
-    .closeBtn {
-      margin-left: 15px;
-      color: white;
-      font-weight: bold;
-      float: right;
-      font-size: 22px;
-      line-height: 20px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .closeBtn:hover {
-      color: black;
-    }
-
-    .closeBtn:not( :hover ) {
-      color: white;
-    }
-
-  </style>
-</head>
-
-<body>
-<div class="container">
-  <h1>PingOne for Customers OIDC Sample</h1>
-  <br>
-  <div id="status" style="display: block">
-    <span class="closeBtn" onclick="this.parentElement.style.display='none';">&times;</span>
-    <div class="alert" id="alertMessage"></div>
-  </div>
-
-  <div id="signInView">
-    <p>You are not currently authenticated. Click Sign On to get started.</p>
-    <div class="input-group">
-      <button type="button" id="signInBtn">Sign On</button>
-    </div>
-  </div>
-
-  <div id="signOffView" style="display: none">
-    <fieldset>
-      Hello, <strong id="first_name_title"></strong> <strong id="last_name_title"> </strong>!
-
-      <p>Please check your user and token information below<br> Click Sign Off to
-        switch users.</p>
-
-      <div id="userData">
-
-        <div class="input-group">
-          <button id="signOffBtn">Sign Off</button>
-        </div>
-
-        <div class="input-field" id="userInfoView"></div>
-        <div class="input-field" id="tokenInfoView"></div>
-      </div>
-    </fieldset>
-  </div>
-</div>
-<script src="p14c-js-sdk-auth.js"></script>
-<script src="auth.js"></script>
-</body>
-</html>
+ <html lang="en">
+ <head>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
+   <meta http-equiv="Content-Security-Policy"
+         content="default-src http://localhost:8080 https://auth.pingone.eu https://auth-staging.pingone.eu https://api.pingone.eu https://api-staging.pingone.eu https://apps.pingone.eu https://apps-staging.pingone.eu https://auth.pingone.com https://auth-staging.pingone.com https://api.pingone.com https://api-staging.pingone.com https://apps.pingone.com https://apps-staging.pingone.com https://auth.pingone.ca https://auth-staging.pingone.ca https://api.pingone.ca https://api-staging.pingone.ca https://apps.pingone.ca https://apps-staging.pingone.ca https://auth.pingone.asia https://auth-staging.pingone.asia https://api.pingone.asia https://api-staging.pingone.asia https://apps.pingone.asia https://apps-staging.pingone.asia https://cdn.polyfill.io https://cdn.shoelace.style 'unsafe-inline';
+         style-src 'self' 'unsafe-inline' ./assets/shoelace.css;
+         script-src 'self' 'unsafe-inline' https://cdn.polyfill.io/v2/polyfill.js https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js">
+   <title>PingOne for Customers OIDC Sample</title>
+   <link rel="stylesheet" href="./assets/shoelace.css" />
+   <script type="text/javascript"
+           src="https://cdn.polyfill.io/v2/polyfill.js?features=Promise,fetch"></script>
+   <script type="text/javascript"
+           src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.12/jsrsasign-all-min.js"></script>
+   <style type="text/css">
+     .closeBtn {
+       margin-left: 15px;
+       color: white;
+       font-weight: bold;
+       float: right;
+       font-size: 22px;
+       line-height: 20px;
+       cursor: pointer;
+       transition: 0.3s;
+     }
+ 
+     .closeBtn:hover {
+       color: black;
+     }
+ 
+     .closeBtn:not( :hover ) {
+       color: white;
+     }
+ 
+   </style>
+ </head>
+ 
+ <body>
+ <div class="container">
+   <h1>PingOne for Customers OIDC Sample</h1>
+   <br>
+   <div id="status" style="display: block">
+     <span class="closeBtn" onclick="this.parentElement.style.display='none';">&times;</span>
+     <div class="alert" id="alertMessage"></div>
+   </div>
+ 
+   <div id="signInView">
+     <p>You are not currently authenticated. Click Sign On to get started.</p>
+     <div class="input-group">
+       <button type="button" id="signInBtn">Sign On</button>
+     </div>
+   </div>
+ 
+   <div id="signOffView" style="display: none">
+     <fieldset>
+       Hello, <strong id="first_name_title"></strong> <strong id="last_name_title"> </strong>!
+ 
+       <p>Please check your user and token information below<br> Click Sign Off to
+         switch users.</p>
+ 
+       <div id="userData">
+ 
+         <div class="input-group">
+           <button id="signOffBtn">Sign Off</button>
+         </div>
+ 
+         <div class="input-field" id="userInfoView"></div>
+         <div class="input-field" id="tokenInfoView"></div>
+       </div>
+     </fieldset>
+   </div>
+ </div>
+ <script src="p14c-js-sdk-auth.js"></script>
+ <script src="auth.js"></script>
+ </body>
+ </html>
+ 

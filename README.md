@@ -74,8 +74,6 @@ the user. *REDIRECT URLS* values corresponds to this data. The Access and ID Tok
 - `scopes`:  **Optional**. standard OIDC or PingOne custom scopes, separated by a space which you want to request authorization for.
  [PingOne platform scopes](https://apidocs.pingidentity.com/pingone/platform/v1/api/#access-services-through-scopes-and-roles) are configured under "Access" tab in PingOne Admin Console. Default value: `["openid"]`
 
-- `responseType`: The type of credentials returned in the response: `token` - to get only an Access Token, `id_token` - to get only an ID Token (if you don't plan on accessing an API).
-
 - `responseMode` :  **Optional**.  A string that specifies the mechanism for returning authorization response parameters from the authorization endpoint. If set to `pi.flow` value than the redirect_uri parameter is not required and authorization response parameters are encoded as a JSON object wrapped in a flow response and returned directly to the client with a 200 status.
 Default value: not set. 
 

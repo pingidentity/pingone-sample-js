@@ -5,8 +5,8 @@ const authClient = new PingOneAuthClient({
   clientId: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
   redirectUri: 'http://localhost:8080',
   scopes: ['openid','profile', 'email', 'address'],
-  responseType: ['token', 'id_token'],
-  pkce: false
+  responseType: ['code'],
+  pkce: true
 });
 
 displayViews(false);

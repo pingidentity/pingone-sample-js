@@ -19,7 +19,8 @@ You will need the following things:
 - PingOne Account  - If you don’t have an existing one, please register it.
 - An OpenID Connect Application, configured as a for `Single Page` app (SPA) type. Documentation for creating one can be found [here](https://docs.pingidentity.com/r/en-us/pingone/p1_add_app_worker).  Please ensure the following configuration items (which are also set in this example) are applied to the application in the admin console:
   - **Response Type** : `Token` and `ID Token`
-  - **Grant Type** : `Implicit`
+  - **Grant Type** : `Authorization Code`
+  - **PKCE Enforcement** : `S256_REQUIRED`
   - **Allowed Scopes** : `openid`, `profile`, `email` and `address`
   - **Redirect URI** : `http://localhost:8080` *(or set to your own environment)*
   - **Signoff URL** : `http://localhost:8080` *(or set to your own environment)*
@@ -48,8 +49,8 @@ const authClient = new PingOneAuthClient({
   redirectUri: 'http://localhost:8080',
   postLogoutRedirectUri: 'http://localhost:8080',
   scopes: ['openid','profile', 'email', 'address'],
-  responseType: ['token', 'id_token'],
-  pkce: false
+  responseType: ['code'],
+  pkce: true
 });
 ```
 , where

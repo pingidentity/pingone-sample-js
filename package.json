@@ -1,6 +1,6 @@
 {
   "name": "oidc-implicit-sample",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Simple Javascript client that implements the OpenID Connect implicit flow",
   "keywords": [
